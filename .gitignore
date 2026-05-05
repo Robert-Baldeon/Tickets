@@ -1,0 +1,21 @@
+# Build
+target/
+.flattened-pom.xml
+
+# Local Maven repo override (opcional)
+.m2/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Entorno y logs
+.env
+*.log
+
+# OS
+.DS_Store
+
+# Spring
+HELP.md
