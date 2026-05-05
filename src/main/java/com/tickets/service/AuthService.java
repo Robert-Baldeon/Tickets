@@ -35,11 +35,14 @@ public class AuthService {
             throw new IllegalArgumentException("Email already exists");
         }
 
+        boolean isFirstUser = userRepository.count() == 0;
+        String role = isFirstUser ? "ADMIN" : "USER";
+
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setName(request.getName());
-        user.setRole("USER");
+        user.setRole(role);
 
         userRepository.save(user);
 
@@ -66,6 +69,6 @@ public class AuthService {
 
         String token = jwtService.generateToken(userDetails);
 
-        return new AuthResponse(token, user.getEmail(), user.getName());
+        return new AuthResponse(token, user.getEmail(), user.getName(), user.getRole());
     }
 }
