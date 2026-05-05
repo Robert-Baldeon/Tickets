@@ -29,7 +29,13 @@ export default function TicketList() {
   const loadTickets = async () => {
     setLoading(true)
     try {
-      const data = await ticketService.getAll()
+      const data = await ticketService.getAll({
+        search: search || undefined,
+        status: statusFilter !== 'Todos' ? statusFilter : undefined,
+        priority: priorityFilter !== 'Todas' ? priorityFilter : undefined,
+        page,
+        size: pageSize,
+      })
       setPageResult(data)
     } catch {
       console.error('Error loading tickets')
