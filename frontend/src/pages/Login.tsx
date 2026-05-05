@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -23,14 +24,17 @@ export default function Login() {
 
   return (
     <>
-      <div style={{ height: 6, backgroundColor: '#1a1f2e', width: '100%' }} />
+      <div style={{ position: 'fixed', top: 16, right: 16, zIndex: 100 }}>
+        <ThemeToggle />
+      </div>
+      <div style={{ height: 6, backgroundColor: 'var(--bg-login-topbar)', width: '100%' }} />
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: 'calc(100vh - 6px)',
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--bg-page)',
           padding: 40,
         }}
       >
@@ -38,58 +42,54 @@ export default function Login() {
           style={{
             width: '100%',
             maxWidth: 420,
-            border: '1px solid #e0e0e0',
-            backgroundColor: '#ffffff',
+            border: '1px solid var(--border-color)',
+            backgroundColor: 'var(--bg-card)',
             padding: 48,
           }}
         >
-          {/* Logo placeholder */}
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 32 }}>
             <div
               style={{
                 width: 64,
                 height: 64,
-                border: '2px solid #1a1f2e',
+                border: '2px solid var(--text-primary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <div style={{ width: 32, height: 32, backgroundColor: '#1a1f2e' }} />
+              <div style={{ width: 32, height: 32, backgroundColor: 'var(--text-primary)' }} />
             </div>
           </div>
 
-          {/* Title */}
           <h1
             style={{
               fontSize: 24,
               fontWeight: 700,
               textAlign: 'center',
               marginBottom: 8,
-              color: '#1a1f2e',
+              color: 'var(--text-primary)',
             }}
           >
             Gestión de Tickets
           </h1>
 
-          {/* Subtitle */}
           <p
             style={{
               fontSize: 14,
               textAlign: 'center',
-              color: '#888888',
+              color: 'var(--text-secondary)',
               marginBottom: 32,
             }}
           >
             Iniciar Sesión
           </p>
 
-          {/* Error message */}
           {error && (
             <p
               style={{
                 fontSize: 13,
-                color: '#d32f2f',
+                color: 'var(--error-color)',
                 textAlign: 'center',
                 marginBottom: 16,
               }}
@@ -98,9 +98,7 @@ export default function Login() {
             </p>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit}>
-            {/* Email */}
             <div style={{ marginBottom: 24 }}>
               <label
                 htmlFor="email"
@@ -109,7 +107,7 @@ export default function Login() {
                   fontSize: 12,
                   fontWeight: 600,
                   letterSpacing: 1,
-                  color: '#1a1f2e',
+                  color: 'var(--text-primary)',
                   marginBottom: 8,
                 }}
               >
@@ -126,15 +124,14 @@ export default function Login() {
                   width: '100%',
                   padding: '14px 16px',
                   fontSize: 15,
-                  border: '1px solid #e0e0e0',
-                  backgroundColor: '#ffffff',
-                  color: '#1a1f2e',
+                  border: '1px solid var(--border-color)',
+                  backgroundColor: 'var(--bg-input)',
+                  color: 'var(--text-primary)',
                   outline: 'none',
                 }}
               />
             </div>
 
-            {/* Password */}
             <div style={{ marginBottom: 32 }}>
               <label
                 htmlFor="password"
@@ -143,7 +140,7 @@ export default function Login() {
                   fontSize: 12,
                   fontWeight: 600,
                   letterSpacing: 1,
-                  color: '#1a1f2e',
+                  color: 'var(--text-primary)',
                   marginBottom: 8,
                 }}
               >
@@ -159,15 +156,14 @@ export default function Login() {
                   width: '100%',
                   padding: '14px 16px',
                   fontSize: 15,
-                  border: '1px solid #e0e0e0',
-                  backgroundColor: '#ffffff',
-                  color: '#1a1f2e',
+                  border: '1px solid var(--border-color)',
+                  backgroundColor: 'var(--bg-input)',
+                  color: 'var(--text-primary)',
                   outline: 'none',
                 }}
               />
             </div>
 
-            {/* Submit button */}
             <button
               type="submit"
               disabled={isLoading}
@@ -177,8 +173,8 @@ export default function Login() {
                 fontSize: 14,
                 fontWeight: 700,
                 letterSpacing: 1.5,
-                color: '#ffffff',
-                backgroundColor: '#1a1f2e',
+                color: 'var(--text-on-primary)',
+                backgroundColor: 'var(--btn-primary)',
                 border: 'none',
                 cursor: isLoading ? 'not-allowed' : 'pointer',
                 opacity: isLoading ? 0.7 : 1,
