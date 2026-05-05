@@ -13,9 +13,14 @@ export interface PageResult<T> {
 }
 
 export const ticketService = {
-  async getAll(): Promise<PageResult<Ticket>> {
+  async getAll(options?: { search?: string; status?: string; priority?: string; page?: number; size?: number }): Promise<PageResult<Ticket>> {
     try {
-      const params = new URLSearchParams({ page: '0', size: '1000' })
+      const params = new URLSearchParams()
+      if (options?.search) params.set('search', options.search)
+      if (options?.status) params.set('status', options.status)
+      if (options?.priority) params.set('priority', options.priority)
+      params.set('page', String(options?.page ?? 0))
+      params.set('size', String(options?.size ?? 10))
       const { data } = await api.get<PageResult<Ticket>>(`/tickets?${params}`)
       await cacheTickets(data.content)
       return data
