@@ -12,13 +12,14 @@ public class TicketResponse {
     private String createdByEmail;
     private String createdByName;
     private String assignedToEmail;
+    private Long assignedToId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public TicketResponse() {}
 
     private TicketResponse(Long id, String title, String description, String status, String priority,
-                           String createdByEmail, String createdByName, String assignedToEmail,
+                           String createdByEmail, String createdByName, String assignedToEmail, Long assignedToId,
                            LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -28,6 +29,7 @@ public class TicketResponse {
         this.createdByEmail = createdByEmail;
         this.createdByName = createdByName;
         this.assignedToEmail = assignedToEmail;
+        this.assignedToId = assignedToId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -45,6 +47,7 @@ public class TicketResponse {
         private String createdByEmail;
         private String createdByName;
         private String assignedToEmail;
+        private Long assignedToId;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
@@ -56,10 +59,11 @@ public class TicketResponse {
         public TicketResponseBuilder createdByEmail(String createdByEmail) { this.createdByEmail = createdByEmail; return this; }
         public TicketResponseBuilder createdByName(String createdByName) { this.createdByName = createdByName; return this; }
         public TicketResponseBuilder assignedToEmail(String assignedToEmail) { this.assignedToEmail = assignedToEmail; return this; }
+        public TicketResponseBuilder assignedToId(Long assignedToId) { this.assignedToId = assignedToId; return this; }
         public TicketResponseBuilder createdAt(LocalDateTime createdAt) { this.createdAt = createdAt; return this; }
         public TicketResponseBuilder updatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; return this; }
         public TicketResponse build() {
-            return new TicketResponse(id, title, description, status, priority, createdByEmail, createdByName, assignedToEmail, createdAt, updatedAt);
+            return new TicketResponse(id, title, description, status, priority, createdByEmail, createdByName, assignedToEmail, assignedToId, createdAt, updatedAt);
         }
     }
 
@@ -79,6 +83,8 @@ public class TicketResponse {
     public void setCreatedByName(String createdByName) { this.createdByName = createdByName; }
     public String getAssignedToEmail() { return assignedToEmail; }
     public void setAssignedToEmail(String assignedToEmail) { this.assignedToEmail = assignedToEmail; }
+    public Long getAssignedToId() { return assignedToId; }
+    public void setAssignedToId(Long assignedToId) { this.assignedToId = assignedToId; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
