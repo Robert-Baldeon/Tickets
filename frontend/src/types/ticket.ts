@@ -24,6 +24,7 @@ export interface Ticket {
   createdByEmail: string | null
   createdByName: string | null
   assignedToEmail: string | null
+  assignedToId: number | null
   createdAt: string
   updatedAt: string
 }
