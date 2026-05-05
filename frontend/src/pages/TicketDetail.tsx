@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { ticketService, commentService, attachmentService } from '../services/ticketService'
 import { Ticket, Comment, Attachment } from '../types/ticket'
+import NotificationBell from '../components/NotificationBell'
+import ThemeToggle from '../components/ThemeToggle'
 
 const STATUS_ORDER = ['ABIERTO', 'EN_PROGRESO', 'CERRADO']
 
@@ -110,18 +112,18 @@ export default function TicketDetail() {
 
   const statusBadgeColor = (status: string) => {
     switch (status) {
-      case 'ABIERTO': return '#1a1f2e'
-      case 'EN_PROGRESO': return '#e67e22'
-      case 'CERRADO': return '#888'
-      default: return '#1a1f2e'
+      case 'ABIERTO': return 'var(--badge-abierto-text)'
+      case 'EN_PROGRESO': return 'var(--badge-en-progreso-text)'
+      case 'CERRADO': return 'var(--badge-cerrado-text)'
+      default: return 'var(--badge-abierto-text)'
     }
   }
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
         <Header onLogout={logout} userName={name} />
-        <div style={{ padding: 48, textAlign: 'center', color: '#888', fontSize: 14 }}>
+        <div style={{ padding: 48, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 14 }}>
           Cargando ticket...
         </div>
       </div>
@@ -130,9 +132,9 @@ export default function TicketDetail() {
 
   if (!ticket) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
         <Header onLogout={logout} userName={name} />
-        <div style={{ padding: 48, textAlign: 'center', color: '#888', fontSize: 14 }}>
+        <div style={{ padding: 48, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 14 }}>
           Ticket no encontrado
         </div>
       </div>
@@ -140,18 +142,17 @@ export default function TicketDetail() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
       <Header onLogout={logout} userName={name} />
 
       <div style={{ padding: '32px 40px', maxWidth: 900, margin: '0 auto' }}>
-        {/* Breadcrumb back */}
         <div style={{ marginBottom: 24 }}>
           <button
             onClick={() => navigate('/tickets')}
             style={{
               background: 'none',
               border: 'none',
-              color: '#888',
+              color: 'var(--text-secondary)',
               fontSize: 13,
               cursor: 'pointer',
               padding: '4px 0',
@@ -165,15 +166,13 @@ export default function TicketDetail() {
           </button>
         </div>
 
-        {/* Main card */}
-        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e0e0e0', padding: 32 }}>
-          {/* Title section */}
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1a1f2e', marginBottom: 8 }}>
+        <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', padding: 32 }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8 }}>
             {ticket.title}
           </h2>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-            <span style={{ fontSize: 13, color: '#888' }}>Ticket #{ticket.id}</span>
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Ticket #{ticket.id}</span>
             <span
               style={{
                 display: 'inline-block',
@@ -189,39 +188,44 @@ export default function TicketDetail() {
             </span>
           </div>
 
-          {/* Date and creator row */}
           <div style={{ display: 'flex', gap: 48, marginBottom: 24 }}>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#888', marginBottom: 4 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 4 }}>
                 FECHA DE CREACION
               </div>
-              <div style={{ fontSize: 14, color: '#1a1f2e' }}>{formatDate(ticket.createdAt)}</div>
+              <div style={{ fontSize: 14, color: 'var(--text-primary)' }}>{formatDate(ticket.createdAt)}</div>
             </div>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#888', marginBottom: 4 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 4 }}>
                 CREADO POR
               </div>
-              <div style={{ fontSize: 14, color: '#1a1f2e' }}>{ticket.createdByName || ticket.createdByEmail || '-'}</div>
+              <div style={{ fontSize: 14, color: 'var(--text-primary)' }}>{ticket.createdByName || ticket.createdByEmail || '-'}</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 4 }}>
+                TECNICO ASIGNADO
+              </div>
+              <div style={{ fontSize: 14, color: 'var(--text-primary)' }}>
+                {ticket.assignedToEmail || 'Sin asignar'}
+              </div>
             </div>
           </div>
 
-          <div style={{ height: 1, backgroundColor: '#e8e8e8', marginBottom: 24 }} />
+          <div style={{ height: 1, backgroundColor: 'var(--border-subtle)', marginBottom: 24 }} />
 
-          {/* Description section */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#888', marginBottom: 8 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 8 }}>
               DESCRIPCION
             </div>
-            <p style={{ fontSize: 14, color: '#1a1f2e', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
+            <p style={{ fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
               {ticket.description || 'Sin descripcion'}
             </p>
           </div>
 
-          <div style={{ height: 1, backgroundColor: '#e8e8e8', marginBottom: 24 }} />
+          <div style={{ height: 1, backgroundColor: 'var(--border-subtle)', marginBottom: 24 }} />
 
-          {/* Comments section */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#888', marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 16 }}>
               COMENTARIOS ({comments.length})
             </div>
 
@@ -231,20 +235,20 @@ export default function TicketDetail() {
                   <div
                     key={c.id}
                     style={{
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border-color)',
                       padding: 16,
-                      backgroundColor: '#ffffff',
+                      backgroundColor: 'var(--bg-card)',
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: '#1a1f2e' }}>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
                         {c.authorName}
                       </span>
-                      <span style={{ fontSize: 12, color: '#888' }}>
+                      <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                         {formatDateTime(c.createdAt)}
                       </span>
                     </div>
-                    <p style={{ fontSize: 13, color: '#1a1f2e', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                    <p style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
                       {c.content}
                     </p>
                   </div>
@@ -253,17 +257,16 @@ export default function TicketDetail() {
             )}
 
             {comments.length === 0 && (
-              <p style={{ fontSize: 13, color: '#aaa', marginBottom: 24, fontStyle: 'italic' }}>
+              <p style={{ fontSize: 13, color: 'var(--text-tertiary)', marginBottom: 24, fontStyle: 'italic' }}>
                 No hay comentarios todavia
               </p>
             )}
           </div>
 
-          <div style={{ height: 1, backgroundColor: '#e8e8e8', marginBottom: 24 }} />
+          <div style={{ height: 1, backgroundColor: 'var(--border-subtle)', marginBottom: 24 }} />
 
-          {/* Add comment section */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#888', marginBottom: 8 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 8 }}>
               ANADIR COMENTARIO
             </div>
             <form onSubmit={handleAddComment}>
@@ -276,9 +279,9 @@ export default function TicketDetail() {
                   width: '100%',
                   padding: '14px 16px',
                   fontSize: 14,
-                  border: '1px solid #e0e0e0',
-                  backgroundColor: '#ffffff',
-                  color: '#1a1f2e',
+                  border: '1px solid var(--border-color)',
+                  backgroundColor: 'var(--bg-input)',
+                  color: 'var(--text-primary)',
                   outline: 'none',
                   resize: 'vertical',
                   fontFamily: 'inherit',
@@ -292,9 +295,9 @@ export default function TicketDetail() {
                   padding: '10px 20px',
                   fontSize: 12,
                   fontWeight: 600,
-                  color: '#1a1f2e',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #e0e0e0',
+                  color: 'var(--text-primary)',
+                  backgroundColor: 'var(--bg-card)',
+                  border: '1px solid var(--border-color)',
                   cursor: savingComment || !commentText.trim() ? 'not-allowed' : 'pointer',
                   opacity: savingComment || !commentText.trim() ? 0.5 : 1,
                 }}
@@ -304,11 +307,10 @@ export default function TicketDetail() {
             </form>
           </div>
 
-          <div style={{ height: 1, backgroundColor: '#e8e8e8', marginBottom: 24 }} />
+          <div style={{ height: 1, backgroundColor: 'var(--border-subtle)', marginBottom: 24 }} />
 
-          {/* Attachments section */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: '#888', marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 16 }}>
               ARCHIVOS ADJUNTOS ({attachments.length})
             </div>
 
@@ -318,7 +320,7 @@ export default function TicketDetail() {
                   <div
                     key={a.id}
                     style={{
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border-color)',
                       padding: '12px 16px',
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -326,8 +328,8 @@ export default function TicketDetail() {
                     }}
                   >
                     <div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1f2e' }}>{a.fileName}</div>
-                      <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{a.fileName}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>
                         {formatFileSize(a.fileSize)} &middot; {formatDateTime(a.createdAt)}
                       </div>
                     </div>
@@ -337,9 +339,8 @@ export default function TicketDetail() {
             )}
           </div>
 
-          <div style={{ height: 1, backgroundColor: '#e8e8e8', marginBottom: 24 }} />
+          <div style={{ height: 1, backgroundColor: 'var(--border-subtle)', marginBottom: 24 }} />
 
-          {/* Actions section */}
           <div style={{ display: 'flex', gap: 12 }}>
             <button
               onClick={handleStatusChange}
@@ -348,8 +349,8 @@ export default function TicketDetail() {
                 fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: 1,
-                color: '#ffffff',
-                backgroundColor: '#1a1f2e',
+                color: 'var(--text-on-primary)',
+                backgroundColor: 'var(--btn-primary)',
                 border: 'none',
                 cursor: 'pointer',
               }}
@@ -363,9 +364,9 @@ export default function TicketDetail() {
                 fontSize: 12,
                 fontWeight: 700,
                 letterSpacing: 1,
-                color: '#1a1f2e',
-                backgroundColor: '#ffffff',
-                border: '1px solid #e0e0e0',
+                color: 'var(--text-primary)',
+                backgroundColor: 'var(--bg-card)',
+                border: '1px solid var(--border-color)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -394,8 +395,8 @@ function Header({ onLogout, userName }: { onLogout: () => void; userName: string
   return (
     <header
       style={{
-        backgroundColor: '#ffffff',
-        borderBottom: '1px solid #e0e0e0',
+        backgroundColor: 'var(--bg-card)',
+        borderBottom: '1px solid var(--border-color)',
         padding: '0 32px',
         height: 60,
         display: 'flex',
@@ -404,18 +405,37 @@ function Header({ onLogout, userName }: { onLogout: () => void; userName: string
       }}
     >
       <h1
-        style={{ fontSize: 16, fontWeight: 700, letterSpacing: 1.5, color: '#1a1f2e', cursor: 'pointer' }}
+        style={{ fontSize: 16, fontWeight: 700, letterSpacing: 1.5, color: 'var(--text-primary)', cursor: 'pointer' }}
         onClick={() => navigate('/tickets')}
       >
         GESTION DE TICKETS
       </h1>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ fontSize: 13, color: '#666' }}>{userName}</span>
+        <nav style={{ display: 'flex', gap: 24 }}>
+          <span
+            style={{ fontSize: 13, color: 'var(--text-secondary)', cursor: 'pointer' }}
+            onClick={() => navigate('/dashboard')}
+          >
+            DASHBOARD
+          </span>
+          <span
+            style={{ fontSize: 13, color: 'var(--header-active-nav)', fontWeight: 700, cursor: 'pointer' }}
+            onClick={() => navigate('/tickets')}
+          >
+            TICKETS
+          </span>
+        </nav>
+        <NotificationBell />
+        <ThemeToggle />
+        <span
+          style={{ fontSize: 13, color: 'var(--text-tertiary)', cursor: 'pointer' }}
+          onClick={() => navigate('/profile')}
+        >{userName}</span>
         <div
           style={{
             width: 36,
             height: 36,
-            border: '1px solid #e0e0e0',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -424,7 +444,7 @@ function Header({ onLogout, userName }: { onLogout: () => void; userName: string
           onClick={onLogout}
           title="Cerrar sesion"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1f2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--icon-color)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
             <polyline points="16 17 21 12 16 7" />
             <line x1="21" y1="12" x2="9" y2="12" />
