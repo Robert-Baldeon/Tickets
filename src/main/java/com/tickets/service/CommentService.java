@@ -5,7 +5,6 @@ import com.tickets.dto.CommentResponse;
 import com.tickets.entity.Comment;
 import com.tickets.entity.Ticket;
 import com.tickets.entity.User;
-import com.tickets.repository.AttachmentRepository;
 import com.tickets.repository.CommentRepository;
 import com.tickets.repository.TicketRepository;
 import com.tickets.repository.UserRepository;
@@ -19,11 +18,13 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
-    public CommentService(CommentRepository commentRepository, TicketRepository ticketRepository, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository, TicketRepository ticketRepository, UserRepository userRepository, NotificationService notificationService) {
         this.commentRepository = commentRepository;
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public List<CommentResponse> getByTicketId(Long ticketId) {
@@ -44,7 +45,27 @@ public class CommentService {
         comment.setTicket(ticket);
         comment.setAuthor(author);
 
-        return toResponse(commentRepository.save(comment));
+        Comment saved = commentRepository.save(comment);
+
+        User assignedTo = ticket.getAssignedTo();
+        if (assignedTo != null && !assignedTo.getEmail().equals(userEmail)) {
+            notificationService.notifyUser(
+                    assignedTo.getId(),
+                    ticket,
+                    "Nuevo comentario en ticket \"" + ticket.getTitle() + "\": " + author.getName()
+            );
+        }
+
+        User creator = ticket.getCreatedBy();
+        if (creator != null && !creator.getEmail().equals(userEmail) && !creator.getId().equals(author.getId())) {
+            notificationService.notifyUser(
+                    creator.getId(),
+                    ticket,
+                    "Nuevo comentario en tu ticket \"" + ticket.getTitle() + "\": " + author.getName()
+            );
+        }
+
+        return toResponse(saved);
     }
 
     private CommentResponse toResponse(Comment comment) {
