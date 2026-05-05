@@ -19,3 +19,8 @@ target/
 
 # Spring
 HELP.md
+
+# Frontend build
+frontend/dist/
+frontend/node_modules/
+frontend/.vite/
