@@ -21,6 +21,14 @@ Aplicacion web para la gestion centralizada de tickets e incidencias empresarial
 | Roles (ADMIN/USER) | ✅ |
 | Modo offline | ✅ |
 
+## Previsualizacion
+
+### Login Dark Mode
+![Login Dark Mode](Image_01_login_dark.png)
+
+### Login White Mode
+![Login White Mode](Image_02_login_white.png)
+
 ## Inicio Rapido
 
 ```bash
