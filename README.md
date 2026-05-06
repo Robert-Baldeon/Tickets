@@ -29,6 +29,15 @@ Aplicacion web para la gestion centralizada de tickets e incidencias empresarial
 ### Login White Mode
 ![Login White Mode](Image_02_login_white.png)
 
+### Crear Tickets
+![Crear Tickets](CrearTickets.png)
+
+### Dashboard
+![Dashboard](Dashboard.png)
+
+### Lista de Tickets
+![Tickets](Tickets.png)
+
 ## Inicio Rapido
 
 ```bash
